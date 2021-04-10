@@ -78,7 +78,39 @@ int main(int argc, char *argv[])
 }
 
 ```
-In C the main program is treated like every other functions, it can receive args, return values, etc
+In C, the main program is treated like every other functions, it can receive args, return values, etc
 The only diff is that it is called by the OS itself when the process starts
 
 in the above code, the main func 1st defines a char array 'buffer' that can only receive 64 chars
+The c compiler treats the char as a local variable as it is defined within a func, space is reserved within the main funcs stack frame during its exec when the prog runs
+
+the prog copies the contents of the given smd line args into the char array 
+the prog terminates it's exec and returns a 0 to the os which is the standard exit code for success
+
+the prog requires cmd args to run, which are then processed by the main func with the help of argc and argv 
+argc - no of args passed to the prog 
+argv - the array of pointers to the strings themselves
+
+Program before strcpy
+
+![Before Strcpy](/ss/b4_cpy.png)
+
+if the arg passed to the prog is 64 or less bytes, the prog works as expected and execs normally
+
+![64 bytes or less](/ss/cpy_with_64char_or_less.png)
+
+Since there are no checks on the size of the input, part of the stack adjacent to the local buffer get's overwritten by the exceeding characters , overflowing the array boundaries 
+
+![cpy with greater than 64 bytes](/ss/cpy_with_more_than_64_chars.png)
+
+The effects of this mem corruption depend on various factors including :
+-The size of the overflow
+-The data included in the overflow  
+
+We can apply an ovesized arg to our ap and observe the effects to see how the above works
+
+## The Immunity Debugger 
+Debugger - acts as a proxy btwn the prog and the cpu , it also allows us to stop the exec flow and allows us to view the content of the registers as well as the process mem space
+-we can also exec asm instructions one at a time to better understand the detailed flow of the prog
+
+
