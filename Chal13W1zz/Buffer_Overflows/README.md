@@ -49,4 +49,36 @@ They are  9, 32bit
  A func can esily ref info from its own stack frame via offsets while exec
  - EIP- The Instruction Pointer = always points to the next code instruction to be executed (Directs the flow of a program)
  
- ##
+## Vulnerable Code Walkthrough
+This app does not perform a proper sanitization of the user input
+
+TO DO:
+- Analyze the program source code
+- Discover that passing a specifically crafted arg will be able to cleate a stack buffer
+
+```C
+
+#include <stdio.h>
+#include <strings.h>
+
+int main(int argc, char *argv[])
+{
+   char buffer[64];
+   
+   if (argc < 2 )
+   { 
+        printf("Error - you must supply at least one arguement\n");
+        
+        return 1;
+      }
+   
+      strcpy(buffer, argv[1]);
+   
+   return 0;
+}
+
+```
+In C the main program is treated like every other functions, it can receive args, return values, etc
+The only diff is that it is called by the OS itself when the process starts
+
+in the above code, the main func 1st defines a char array 'buffer' that can only receive 64 chars
