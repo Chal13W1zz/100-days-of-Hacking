@@ -93,15 +93,15 @@ argv - the array of pointers to the strings themselves
 
 Program before strcpy
 
-![Before Strcpy](/ss/b4_cpy.png)
+![Before Strcpy](ss/b4_cpy.png)
 
 if the arg passed to the prog is 64 or less bytes, the prog works as expected and execs normally
 
-![64 bytes or less](/ss/cpy_with_64char_or_less.png)
+![64 bytes or less](ss/cpy_with_64char_or_less.png)
 
 Since there are no checks on the size of the input, part of the stack adjacent to the local buffer get's overwritten by the exceeding characters , overflowing the array boundaries 
 
-![cpy with greater than 64 bytes](/ss/cpy_with_more_than_64_chars.png)
+![cpy with greater than 64 bytes](ss/cpy_with_more_than_64_chars.png)
 
 The effects of this mem corruption depend on various factors including :
 -The size of the overflow
